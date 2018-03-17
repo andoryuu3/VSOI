@@ -88,66 +88,66 @@ int WriteFile(char *file, void *buf, int size) {
 
 int main(int argc, char *argv[]) {
 	void *buf = malloc(0x100);
-	
+
 	psvDebugScreenInit();
-    printf("VSOI v0.2\n\n");
-    
+    printf("VSOI-PSTV v0.2\n\n");
+
     // Second run
-    if (sceIoRemove("ux0:data/vsoi_flag.flg") < 0)
-		printf("First run detected. Replacing Near with VitaShell...\n");
+    if (sceIoRemove("ux0:data/vsoipstv_flag.flg") < 0)
+		printf("First run detected. Replacing Parental Controls with VitaShell...\n");
 	else
 	{
 		printf("Second run detected. Restoring icon layout...\n");
-		
+
 		sceIoRemove("ux0:iconlayout.ini");
 		cp("ux0:iconlayout.ini", "ux0:data/iconlayout_bak.ini");
-		
+
 		printf("\n\nRebooting in 10 seconds...");
 		sceKernelDelayThread(10 * 1000 * 1000);
 		//sceKernelExitProcess(0);
 		scePowerRequestColdReset();
 	}
-    
+
     // First run
     // Mount vs0 as RW
-	
+
 	printf("Unmounting partition with id 0x%X\n", 0x300); // 0x300 is vs0
 	vshIoUmount(0x300, 0, 0, 0);
-	
+
 	printf("Mounting partition 0x%X with RW permissions...\n", 0x300);
 	_vshIoMount(0x300, 0, 2, buf);
-	
-	
-    // Copy VitaShell's eboot.bin to vs0:app/NPXS10000/eboot.bin
-    
-    // Backup Near's eboot elsewhere
-    if (sceIoRemove("ux0:data/nearEboot.bin") < 0) 
+
+
+    // Copy VitaShell's eboot.bin to vs0:app/NPXS10094/eboot.bin
+
+    // Backup Parental Controls's eboot elsewhere
+    if (sceIoRemove("ux0:data/parentalEboot.bin") < 0)
 		printf("Backup eboot not found.\n");
 	else
 		printf("Removed existing backup eboot.\n");
-		
-    if (cp("ux0:data/nearEboot.bin", "vs0:app/NPXS10000/eboot.bin") != 0)
+
+    if (cp("ux0:data/parentalEboot.bin", "vs0:app/NPXS10094/eboot.bin") != 0)
 		printf("Error backing up the eboot.\n");
 	else
 		printf("Eboot backup created.\n");
-	
-	// Remove Near's eboot and copy VitaShell's to that directory
+
+	// Remove Parental Controls' eboot and copy VitaShell's to that directory
 	SceUID fd;
 	fd = sceIoOpen("app0:vsEboot.bin", SCE_O_RDONLY, 0777);		
 	if (fd >= 0)
 	{
 		printf("Using app0:vsEboot.bin\n");
-		sceIoRemove("vs0:app/NPXS10000/eboot.bin");
-		if (cp("vs0:app/NPXS10000/eboot.bin", "app0:vsEboot.bin") >= 0)
+		sceIoRemove("vs0:app/NPXS10094/eboot.bin");
+		if (cp("vs0:app/NPXS10094/eboot.bin", "app0:vsEboot.bin") >= 0)
 			printf("Successfully copied eboot to directory!\n");
 		else
-			printf("Error copying eboot to directory!\n");					
+			printf("Error copying eboot to directory!\n");
 	}
 	else
 	{
 		printf("ERROR: VitaShell eboot not found!\n");
 	}
-	
+
 	// Back up HENkaku config
 	sceIoRemove("ux0:data/ux0_config.txt");
 	sceIoRemove("ux0:data/ur0_config.txt");
@@ -173,22 +173,22 @@ int main(int argc, char *argv[]) {
 	else
 	{
 		printf("HENkaku config not found at ur0. Skipping.\n");
-	}	
+	}
 	// Remove app.db and reboot to force db rebuild
-	
+
 	printf("Removing app.db...\n");
-	
+
 	// Back up app.db before removing
 	sceIoRemove("ux0:data/app_db_bak.db");
 	cp("ux0:data/app_db_bak.db", "ur0:shell/db/app.db");
 	sceIoRemove("ur0:shell/db/app.db");
-	
+
 	// Back up icon layout file
 	sceIoRemove("ux0:data/iconlayout_bak.ini");
 	cp("ux0:data/iconlayout_bak.ini", "ux0:iconlayout.ini");
-	
+
 	// Set flag for next run
-	cp("ux0:data/vsoi_flag.flg", "app0:vsoi_flag.flg");
+	cp("ux0:data/vsoipstv_flag.flg", "app0:vsoipstv_flag.flg");
 
 	printf("\n\nRebooting in 10 seconds...");
 

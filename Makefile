@@ -1,5 +1,5 @@
-TITLE_ID = VSOI00001
-TARGET   = VSOI
+TITLE_ID = VSOIPSTV1
+TARGET   = VSOI-PSTV
 OBJS     = main.o graphics.o font.o
 
 LIBS = -lSceLibKernel_stub -lSceVshBridge_stub -lSceDisplay_stub -lScePower_stub
