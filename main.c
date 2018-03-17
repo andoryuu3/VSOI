@@ -90,14 +90,14 @@ int main(int argc, char *argv[]) {
 	void *buf = malloc(0x100);
 
 	psvDebugScreenInit();
-    printf("VSOI-PSTV v0.2\n\n");
+    printf("VSOI-PSTV v0.2-pc by gnmmarechal and andoryuu3\n\n");
 
     // Second run
     if (sceIoRemove("ux0:data/vsoipstv_flag.flg") < 0)
 		printf("First run detected. Replacing Parental Controls with VitaShell...\n");
 	else
 	{
-		printf("Second run detected. Restoring icon layout...\n");
+		printf("Hello again! Guess you want your icon layout restored? One moment...\n");
 
 		sceIoRemove("ux0:iconlayout.ini");
 		cp("ux0:iconlayout.ini", "ux0:data/iconlayout_bak.ini");
@@ -133,7 +133,7 @@ int main(int argc, char *argv[]) {
 
 	// Remove Parental Controls' eboot and copy VitaShell's to that directory
 	SceUID fd;
-	fd = sceIoOpen("app0:vsEboot.bin", SCE_O_RDONLY, 0777);		
+	fd = sceIoOpen("app0:vsEboot.bin", SCE_O_RDONLY, 0777);
 	if (fd >= 0)
 	{
 		printf("Using app0:vsEboot.bin\n");
