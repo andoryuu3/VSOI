@@ -93,14 +93,14 @@ int main(int argc, char *argv[]) {
     printf("VSOI-PSTV v0.2-pc by gnmmarechal and andoryuu3\n\n");
 
     // Second run
-    if (sceIoRemove("ux0:data/vsoipstv_flag.flg") < 0)
+    if (sceIoRemove("ux0:data/VSOI_PSTV/vsoipstv_flag.flg") < 0)
 		printf("First run detected. Replacing Parental Controls with VitaShell...\n");
 	else
 	{
 		printf("Hello again! Guess you want your icon layout restored? One moment...\n");
 
 		sceIoRemove("ux0:iconlayout.ini");
-		cp("ux0:iconlayout.ini", "ux0:data/iconlayout_bak.ini");
+		cp("ux0:iconlayout.ini", "ux0:data/VSOI-PSTV/iconlayout_bak.ini");
 
 		printf("\n\nRebooting in 10 seconds...");
 		sceKernelDelayThread(10 * 1000 * 1000);
@@ -121,12 +121,12 @@ int main(int argc, char *argv[]) {
     // Copy VitaShell's eboot.bin to vs0:app/NPXS10094/eboot.bin
 
     // Backup Parental Controls's eboot elsewhere
-    if (sceIoRemove("ux0:data/parentalEboot.bin") < 0)
+    if (sceIoRemove("ux0:data/VSOI-PSTV/parentalEboot.bin") < 0)
 		printf("Backup eboot not found.\n");
 	else
 		printf("Removed existing backup eboot.\n");
 
-    if (cp("ux0:data/parentalEboot.bin", "vs0:app/NPXS10094/eboot.bin") != 0)
+    if (cp("ux0:data/VSOI-PSTV/parentalEboot.bin", "vs0:app/NPXS10094/eboot.bin") != 0)
 		printf("Error backing up the eboot.\n");
 	else
 		printf("Eboot backup created.\n");
@@ -149,8 +149,8 @@ int main(int argc, char *argv[]) {
 	}
 
 	// Back up HENkaku config
-	sceIoRemove("ux0:data/ux0_config.txt");
-	sceIoRemove("ux0:data/ur0_config.txt");
+	sceIoRemove("ux0:data/VSOI-PSTV/ux0_config.txt");
+	sceIoRemove("ux0:data/VSOI-PSTV/ur0_config.txt");
 	printf("Backing up HENkaku config...\n");
 	fd = sceIoOpen("ux0:tai/config.txt", SCE_O_RDONLY, 0777);
 	SceUID fdR = sceIoOpen("ur0:tai/config.txt", SCE_O_RDONLY, 0777);
@@ -158,7 +158,7 @@ int main(int argc, char *argv[]) {
 	{
 		sceIoClose(fd);
 		printf("Found HENkaku config in ux0. Backing up.\n");
-		cp("ux0:data/ux0_config.txt", "ux0:tai/config.txt");
+		cp("ux0:data/VSOI-PSTV/ux0_config.txt", "ux0:tai/config.txt");
 	}
 	else
 	{
@@ -168,7 +168,7 @@ int main(int argc, char *argv[]) {
 	{
 		sceIoClose(fdR);
 		printf("Found HENkaku config in ur0. Backing up.\n");
-		cp("ux0:data/ur0_config.txt", "ur0:tai/config.txt");
+		cp("ux0:data/VSOI-PSTV/ur0_config.txt", "ur0:tai/config.txt");
 	}
 	else
 	{
@@ -179,16 +179,16 @@ int main(int argc, char *argv[]) {
 	printf("Removing app.db...\n");
 
 	// Back up app.db before removing
-	sceIoRemove("ux0:data/app_db_bak.db");
-	cp("ux0:data/app_db_bak.db", "ur0:shell/db/app.db");
+	sceIoRemove("ux0:data/VSOI-PSTV/app_db_bak.db");
+	cp("ux0:data/VSOI-PSTV/app_db_bak.db", "ur0:shell/db/app.db");
 	sceIoRemove("ur0:shell/db/app.db");
 
 	// Back up icon layout file
-	sceIoRemove("ux0:data/iconlayout_bak.ini");
-	cp("ux0:data/iconlayout_bak.ini", "ux0:iconlayout.ini");
+	sceIoRemove("ux0:data/VSOI-PSTV/iconlayout_bak.ini");
+	cp("ux0:data/VSOI-PSTV/iconlayout_bak.ini", "ux0:iconlayout.ini");
 
 	// Set flag for next run
-	cp("ux0:data/vsoipstv_flag.flg", "app0:vsoipstv_flag.flg");
+	cp("ux0:data/VSOI-PSTV/vsoipstv_flag.flg", "app0:vsoipstv_flag.flg");
 
 	printf("\n\nRebooting in 10 seconds...");
 

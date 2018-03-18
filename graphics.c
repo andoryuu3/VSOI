@@ -89,7 +89,7 @@ void psvDebugScreenInit() {
 
 	sceDisplaySetFrameBuf(&framebuf, SCE_DISPLAY_UPDATETIMING_NEXTVSYNC);
 
-	g_fg_color = 0xFFFFFFFF;
+	g_fg_color = 0xFFFF00FF; //magenta
 	g_bg_color = 0x00000000;
 }
 
